@@ -6,6 +6,7 @@ import com.gupaoedu.vip.spring.formework.beans.support.GPDefaultListableBeanFact
 import com.gupaoedu.vip.spring.formework.core.GPBeanFactory;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 按之前源码分析的套路，IOC、DI、MVC、AOP
@@ -37,13 +38,33 @@ public class GPApplicationContext extends GPDefaultListableBeanFactory implement
     }
 
     private void doAutowired() {
+
+        for (Map.Entry<String, GPBeanDefinition> stringGPBeanDefinitionEntry : super.beanDefinitionMap.entrySet()) {
+            String beanName= stringGPBeanDefinitionEntry.getKey();
+            if (!stringGPBeanDefinitionEntry.getValue().isLazyInit()) {
+                getBean(beanName);
+            }
+        }
+
+
     }
 
     private void doRegisterBeanDefinition(List<GPBeanDefinition> beanDefinitions) {
+        for (GPBeanDefinition beanDefinition : beanDefinitions) {
+            super.beanDefinitionMap.put(beanDefinition.getFactoryBeanName(),beanDefinition);
+        }
+
+
     }
 
     @Override
     public Object getBean(String beanName) {
+
+        //1.初始化
+
+        //2.注入
+        //test分支
+
         return null;
     }
 }
