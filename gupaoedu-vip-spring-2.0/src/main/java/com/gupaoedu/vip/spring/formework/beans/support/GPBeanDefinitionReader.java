@@ -29,6 +29,7 @@ public class GPBeanDefinitionReader {
 
     /**
      * 扫描class文件，获取文件名字
+     *
      * @param scanPackage 类的扫描路径
      */
     private void doScanner(String scanPackage) {
@@ -37,15 +38,15 @@ public class GPBeanDefinitionReader {
         File classPath = new File(url.getFile());
         Arrays.stream(Objects.requireNonNull(classPath.listFiles()))
                 .forEach(file -> {
-            if(file.isDirectory()) {
-                doScanner(scanPackage + "." + file.getName());
-            }else {
-                if(file.getName().endsWith(".class")) {
-                    String className = (scanPackage + "." + file.getName()).replace(".class", "");
-                    this.registerBeanClasses.add(className);
-                }
-            }
-        });
+                    if (file.isDirectory()) {
+                        doScanner(scanPackage + "." + file.getName());
+                    } else {
+                        if (file.getName().endsWith(".class")) {
+                            String className = (scanPackage + "." + file.getName()).replace(".class", "");
+                            this.registerBeanClasses.add(className);
+                        }
+                    }
+                });
 
     }
 
@@ -53,14 +54,14 @@ public class GPBeanDefinitionReader {
      * 加载配置信息
      */
     private void doLoadConfiguration(String location1) {
-        String location = location1.replace("classpath","");
+        String location = location1.replace("classpath", "");
         InputStream is = this.getClass().getClassLoader().getResourceAsStream(location);
         try {
             config.load(is);
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
-            if(null != is) {
+        } finally {
+            if (null != is) {
                 try {
                     is.close();
                 } catch (IOException e) {
@@ -72,13 +73,16 @@ public class GPBeanDefinitionReader {
 
     /**
      * 加载bean的配置信息,方便IOC容器初始化Bean
+     *
      * @return bean的配置信息
      */
     public List<GPBeanDefinition> loadBeanDefinitions() {
         List<GPBeanDefinition> definitions = new ArrayList<>();
-        for(String beanName : registerBeanClasses) {
+        for (String beanName : registerBeanClasses) {
             GPBeanDefinition definition = doCreateBeanDefinition(beanName);
-            if(definition == null) {continue;}
+            if (definition == null) {
+                continue;
+            }
             definitions.add(definition);
         }
         return definitions;
@@ -90,7 +94,9 @@ public class GPBeanDefinitionReader {
     private GPBeanDefinition doCreateBeanDefinition(String beanName) {
         try {
             Class<?> beanClass = Class.forName(beanName);
-            if(beanClass.isInterface()) {return null;}
+            if (beanClass.isInterface()) {
+                return null;
+            }
             GPBeanDefinition definition = new GPBeanDefinition();
             definition.setBeanClassName(beanName);
             definition.setFactoryBeanName(StringUtils.decapitalize(beanClass.getSimpleName()));

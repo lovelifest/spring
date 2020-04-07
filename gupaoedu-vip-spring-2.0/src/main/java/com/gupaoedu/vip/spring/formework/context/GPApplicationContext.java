@@ -17,7 +17,7 @@ public class GPApplicationContext extends GPDefaultListableBeanFactory implement
 
     private GPBeanDefinitionReader reader;
 
-    public GPApplicationContext(String ... configLocations) {
+    public GPApplicationContext(String... configLocations) {
         this.configLocations = configLocations;
         refresh();
     }
@@ -40,7 +40,7 @@ public class GPApplicationContext extends GPDefaultListableBeanFactory implement
     private void doAutowired() {
 
         for (Map.Entry<String, GPBeanDefinition> stringGPBeanDefinitionEntry : super.beanDefinitionMap.entrySet()) {
-            String beanName= stringGPBeanDefinitionEntry.getKey();
+            String beanName = stringGPBeanDefinitionEntry.getKey();
             if (!stringGPBeanDefinitionEntry.getValue().isLazyInit()) {
                 getBean(beanName);
             }
@@ -51,7 +51,7 @@ public class GPApplicationContext extends GPDefaultListableBeanFactory implement
 
     private void doRegisterBeanDefinition(List<GPBeanDefinition> beanDefinitions) {
         for (GPBeanDefinition beanDefinition : beanDefinitions) {
-            super.beanDefinitionMap.put(beanDefinition.getFactoryBeanName(),beanDefinition);
+            super.beanDefinitionMap.put(beanDefinition.getFactoryBeanName(), beanDefinition);
         }
 
 

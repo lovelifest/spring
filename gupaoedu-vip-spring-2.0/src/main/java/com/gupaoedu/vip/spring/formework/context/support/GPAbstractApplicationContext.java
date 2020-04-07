@@ -8,5 +8,6 @@ public abstract class GPAbstractApplicationContext {
     /**
      * 需要子类重写，重启容器的入口
      */
-    public void refresh() {}
+    public void refresh() {
+    }
 }
